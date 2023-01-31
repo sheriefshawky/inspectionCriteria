@@ -1,0 +1,846 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap');
+
+html,
+body{
+    height: 100%;
+    width:  100%;
+    position: relative;
+    overflow-x: hidden;
+}
+
+h1,h2,h3,h4,h5,h6,p,button,span,div {
+
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 500;
+}
+
+.mainContainer{
+    height: 100vh;
+    width: 100%;
+    padding: 1rem 0;
+}
+
+/* Drawer Start*/
+    .drawer{
+        margin-top: calc(20vh + 4px);
+        position: absolute;
+        height: 76vh;
+        width:30%;
+        background: rgb(255, 255, 255,0.85);
+        z-index: 1000;
+        display: none;
+        flex-direction: column;
+        overflow-y: auto;
+        padding: 1rem 0rem;
+
+    }
+
+    body[dir="rtl"] .drawer{
+        left:0;
+    }
+
+    .drawer h3{
+        width: 100%;
+        padding: 0 2rem;
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    .drawer ul{
+        margin: 0 1rem;
+        margin-top: 10px;
+    }
+
+    .drawer ul li{
+       margin-bottom: 5px;
+    }
+
+    .drawer .close{
+        font-weight: 900;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    body[dir='rtl'] .drawer .close{
+        margin-right: 20px;
+    }
+
+    .drawer .close:hover{
+        color: #f44336;
+    }
+/* Drawer End */
+
+/* Top Bar Start */
+
+.topBar{
+    width: 100%;
+    height: 20vh;
+    margin: 0 !important;
+    padding: 0 2rem;
+}
+
+
+.topBar .header{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.topBar .header .bigHeader{
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #0288b1;
+    
+}
+
+.topBar .header .subHeader{
+    font-size: 1.2rem;
+}
+
+.topBar .topBarMenu{
+    height:100%;
+    position: relative;
+}
+
+.topBar .topBarMenu .topBarSlider{
+    height:100%;
+    width: 100%;
+}
+
+.topBar .topBarMenu .topBarSlider .autoplay{
+    height:100%;
+    width: 100%;
+}
+
+.topBar .topBarMenu .fadeRight{
+    height: 100%;
+    width: 22.5%;
+    position: absolute;
+    right: 0;
+    z-index: 5;
+    background-image: linear-gradient(to left, white ,white , transparent);
+}
+
+.topBar .topBarMenu .fadeLeft{
+    height:100%;
+    width: 22.5%;
+    position: absolute;
+    left: 0;
+    z-index: 5;
+    background-image: linear-gradient(to right, white ,white , transparent);
+}
+
+.topBar .topBarMenu .slick-list{
+    padding: 0 20px;
+    z-index: 0;
+    height:100%;
+}
+
+.topBar .topBarMenu .slick-track{
+    height: 100% !important;
+}
+
+.topBar .topBarMenu .slick-slide{
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;    
+}
+
+.topBar .topBarMenu .slick-slide .sliderHover{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    
+}
+
+.topBar .topBarMenu .slick-slide:hover .sliderHover,
+.seletedTopBar .sliderHover{
+    background-image: linear-gradient(to right, white,#0087b0 , white); 
+}
+
+.topBar .topBarMenu .slick-slide:hover,
+.seletedTopBar{
+    color: #0087b0; 
+}
+
+.topBar .topBarMenu .slick-slide .typeContainer{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.topBar .topBarMenu .slick-slide .typeContainer .typeTitle{
+    margin-bottom: 10px;
+}
+
+.topBar .topBarMenu .slick-slide .typeContainer img{
+    width:80%;
+}
+
+body[dir='rtl'] .topBar .topBarMenu .slick-prev{
+    right:20px !important;
+    z-index: 10;
+}
+body[dir='rtl'] .topBar .topBarMenu .slick-next{
+    left:20px !important;
+    z-index: 10; 
+}
+
+.topBar .topBarMenu .slick-next::before,
+.topBar .topBarMenu .slick-prev::before{
+
+    color: #444;
+
+}
+
+/* Top Bar End */
+
+
+
+/* View Area Start */
+
+.viewArea{
+    width: 100%;
+    height: 57.5vh;
+    margin: 0 !important;
+    background-image: linear-gradient( white ,white , rgba(221, 221, 221, 0.678));
+    position: relative;
+
+}
+.viewArea .shadow{
+    position: absolute;
+    top: 0;
+    height: 3px;
+    width: 100%;
+    background-image: linear-gradient(rgba(221, 221, 221, 0.678),white);
+
+}
+.viewArea .sideMenu{
+    display: flex;
+    justify-content: flex-end;    
+    padding: 0;
+}
+
+.viewArea .sideMenu .sideMenuControls{
+    list-style: none;
+    text-align: left;
+    padding: 0 !important;
+    min-height: 50%;
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.viewArea .sideMenu .sideMenuControls .menuIconExt{
+    height: 100%;
+    width:15%;
+    background-image: url("../images/icons/exterior.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+}
+
+.viewArea .sideMenu .sideMenuControls .menuIconEng{
+    height: 90%;
+    width:15%;
+    background-image: url("../images/icons/engine.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;   
+ 
+}
+
+.viewArea .sideMenu .sideMenuControls .menuIconInt{
+    height: 80%;
+    width:15%;
+    background-image: url("../images/icons/interior.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+
+}
+
+.viewArea .sideMenu .sideMenuControls .menuIconCha{
+    height: 80%;
+    width:15%;
+    background-image: url("../images/icons/chassis.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+}
+
+body[dir='rtl'] .viewArea .sideMenu .sideMenuControls .menuIconCha,
+body[dir='rtl'] .viewArea .sideMenu .sideMenuControls .menuIconEng,
+body[dir='rtl'] .viewArea .sideMenu .sideMenuControls .menuIconExt,
+body[dir='rtl'] .viewArea .sideMenu .sideMenuControls .menuIconInt{
+    margin-right: 15px;
+}
+
+
+body[dir='rtl'] .viewArea .sideMenu .sideMenuControls .sideLine{
+    position: absolute;
+    height: 230px;
+    width:3px;
+    left:0;
+    background: #e0eaee;
+}
+
+.viewArea .sideMenu .sideMenuControls li{
+    height: 50px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    line-height: 50px;
+    position: relative;
+    padding-left: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.viewArea .sideMenu .sideMenuControls li:last-of-type{
+    margin-bottom: 0px;
+}
+
+.viewArea .sideMenu .sideMenuControls li:hover,
+.viewArea .sideMenu .sideMenuControls .active,
+.viewArea .sideMenu .sideMenuControls .active .selectedItem{
+    color: #0087b0;
+}
+
+.viewArea .sideMenu .sideMenuControls li:hover .selectedItem,
+.viewArea .sideMenu .sideMenuControls .active li,
+.viewArea .sideMenu .sideMenuControls .active .selectedItem{
+    background: #0087b0;
+}
+
+body[dir='rtl'] .viewArea .sideMenu .sideMenuControls .selectedItem{
+    height: 100%;
+    width:3px;
+    position: absolute;
+    left:0;
+}
+
+.viewArea .model3D{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.viewArea .model3D img{
+    /* width:40%; */
+    max-height: 90%;
+    height: auto;
+    width:auto;
+}
+
+.viewArea .itemsDesc{
+    height: 100%;
+	background-color: floralwhite;
+	display: none;
+}
+
+/* View Area End */
+
+
+/* Bottom Contorls Start */
+
+.bottomControls{
+    height: 17.5vh;
+    width: 100%;
+    padding: 0 2rem;
+    position: relative;
+}
+
+.bottomControls .bottomSlider{
+    height:100%;
+    width: 100%;
+}
+
+.bottomControls .bottomSlider .bottomList{
+    height:100%;
+    width: 100%;
+}
+
+.bottomControls .fadeRight{
+    height: 100%;
+    width: 14%;
+    position: absolute;
+    right: 0;
+    z-index: 5;
+    background-image: linear-gradient(to left, white ,white , transparent);
+}
+
+.bottomControls .fadeLeft{
+    height:100%;
+    width: 14%;
+    position: absolute;
+    left: 0;
+    z-index: 5;
+    background-image: linear-gradient(to right, white ,white , transparent);
+}
+
+.bottomControls .slick-list{
+    padding: 0 20px;
+    z-index: 0;
+    height:100%;
+}
+
+.bottomControls .slick-track{
+    height: 100% !important;
+}
+
+.bottomControls .slick-slide{
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+
+    
+}
+
+
+.bottomControls .slick-slide .reqContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    margin-top: 10px;
+    width: 90%;
+    overflow: hidden;
+    position: relative;
+}
+
+
+.bottomControls .slick-slide .reqContainer .imageContainer{
+    width:10vh;
+    height:10vh;
+    min-height: 10vh;
+    margin-bottom: 8px;
+    margin-top: 5px;
+    border-radius: 50%;
+    padding: 7%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.bottomControls .slick-slide .reqContainer img{
+    max-width: 8vh;
+    height: auto;
+    border-radius: 50%;
+}
+
+.bottomControls .slick-slide .reqContainer .reqTitle{
+    font-size: 0.7rem;
+    text-align: center;
+    width: 100%;
+}
+
+.bottomControls .slick-slide .reqContainer:hover .reqTitle{
+   font-weight: 700;
+   position: absolute;
+   background: white;
+   bottom: 0;
+   height: 80%;
+}
+
+.bottomControls .slick-slide .reqContainer:hover .imageContainer{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 20px;
+ }
+
+ body[dir='rtl'] .bottomControls .slick-prev{
+    right:20px !important;
+    z-index: 10;
+}
+body[dir='rtl'] .bottomControls .slick-next{
+    left:20px !important;
+    z-index: 10; 
+}
+
+.bottomControls .slick-next::before,
+.bottomControls .slick-prev::before{
+
+    color: #444;
+
+}
+
+/* Bottom Control End */
+
+
+/* Media Conditions Start */
+
+@media (max-width: 767px){
+
+    .drawer{
+        width: 90%;
+        margin-top: calc(30vh + 4px);
+    }
+    .topBar{
+        height: 30vh;
+
+    }
+
+    .topBar .header{
+        height: 25%;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .topBar .header .bigHeader{
+        margin-left: 10px;
+    }
+
+    .topBar .topBarMenu{
+        height:70%;
+    }
+
+    .topBar .topBarMenu .fadeLeft{
+        width:34%;
+    }
+
+    .topBar .topBarMenu .fadeRight{
+        width:34%;
+    }
+
+    .viewArea{
+        padding: 0 1rem;
+    }
+
+    .viewArea .sideMenu .sideMenuControls{
+        text-align: center;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-top: 20px;
+        
+    }
+
+    body[dir = 'rtl'] .viewArea .sideMenu .sideMenuControls .sideLine,
+    body[dir = 'ltr'] .viewArea .sideMenu .sideMenuControls .sideLine{
+        height: 4px !important;
+        width: 100% !important;
+        bottom: 0 !important;
+        
+    }
+    
+    .viewArea .sideMenu .sideMenuControls li{
+        height: 40px;
+        font-size: 11px;
+        width:24%;
+        margin-bottom: 0px;
+        line-height: 33px;
+        padding-left: 0;
+        padding-bottom: 7px;
+        justify-content: center;
+    }
+
+
+
+    .viewArea .sideMenu .sideMenuControls .menuIconExt{
+     
+        margin-right: 10px;
+        width: 20%;
+
+    }
+    
+    .viewArea .sideMenu .sideMenuControls .menuIconEng{
+
+        margin-right: 10px;
+        width: 20% ;
+     
+    }
+    
+    .viewArea .sideMenu .sideMenuControls .menuIconInt{
+
+        margin-right: 10px;
+    
+    }
+    
+    .viewArea .sideMenu .sideMenuControls .menuIconCha{
+
+        margin-right: 10px;
+    
+    }
+
+    body[dir = 'rtl'] .viewArea .sideMenu .sideMenuControls .selectedItem,
+    body[dir = 'ltr'] .viewArea .sideMenu .sideMenuControls .selectedItem{
+        height: 4px !important;
+        width: 100% !important;
+        bottom: 0 !important;
+    
+    }
+
+    .viewArea .model3D {
+        align-items: flex-start;
+        
+    }
+
+    .viewArea .model3D img {
+       margin-top: 2rem;
+        width: auto;
+        height: 65%;
+    }
+
+    .bottomControls{
+        margin-top: 1vh;
+        height: 20vh;
+        padding: 0 0;
+        padding-bottom: 1rem;
+    }
+
+    .bottomControls .slick-list{
+        padding: 0 0 ;
+    }
+
+    /* .bottomControls .slick-slide .reqContainer img{
+        width: 90%;
+    } */
+
+    .bottomControls .slick-slide .reqContainer .reqTitle{
+        font-size: 0.65rem;
+    }
+
+    .bottomControls .fadeRight{
+        width: 24.5%;
+    }
+    
+    .bottomControls .fadeLeft{
+        width: 24.5%;
+    }
+
+  
+    
+
+}
+
+@media (max-width:500px){
+    .topBar .header .bigHeader{
+        font-size: 1.25rem;
+        width: auto;
+    }
+    
+    .topBar .header .subHeader{
+        font-size: 1.25rem;
+        width:auto;
+    }
+
+   
+    
+}
+
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+
+/* Media Conditions End */
+
+body[dir = "ltr"] .topBar .topBarMenu .slick-next{
+    right: 20px !important;
+    z-index: 10; 
+}
+
+body[dir = "ltr"] .topBar .topBarMenu .slick-prev{
+    left: 20px !important;
+    z-index: 10; 
+}
+
+body[dir='ltr'] .bottomControls .slick-prev{
+    left:20px !important;
+    z-index: 10;
+}
+
+body[dir='ltr'] .bottomControls .slick-next{
+    right:20px !important;
+    z-index: 10; 
+}
+
+body[dir='ltr'] .viewArea .sideMenu .sideMenuControls .sideLine{
+    position: absolute;
+    height: 230px;
+    width:3px;
+    right:0;
+    background: #e0eaee;
+}
+
+body[dir='ltr'] .viewArea .sideMenu .sideMenuControls .selectedItem{
+    height: 100%;
+    width:3px;
+    position: absolute;
+    right:0;
+}
+
+body[dir='ltr'] .viewArea .sideMenu .sideMenuControls .menuIconCha,
+body[dir='ltr'] .viewArea .sideMenu .sideMenuControls .menuIconEng,
+body[dir='ltr'] .viewArea .sideMenu .sideMenuControls .menuIconExt,
+body[dir='ltr'] .viewArea .sideMenu .sideMenuControls .menuIconInt{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+body[dir="ltr"] .drawer{
+    right:0;
+}
+
+body[dir='ltr'] .drawer .close{
+    margin-left: 20px;
+}
+
+body[dir='ltr'] .topBar .topBarMenu .slick-slide .typeContainer img,
+body[dir='ltr'] .viewArea .model3D{
+    transform: scaleX(-1);
+}
+
+
+.drawer ul{
+    list-style: none;
+} 
+
+.drawer ul li{
+    position: relative;
+}
+
+body[dir='rtl'] .drawer ul li .majorDef,
+body[dir='rtl'] .drawer ul li .minorDef,
+body[dir='rtl'] .drawer ul li .blockerDef,
+body[dir='rtl'] .drawer ul li .reviewDef{
+    position: absolute;
+    right: -1.65rem;
+    top:6px;
+    width:15px;
+    height: 15px;
+}
+
+body[dir='ltr'] .drawer ul li .majorDef,
+body[dir='ltr'] .drawer ul li .minorDef,
+body[dir='ltr'] .drawer ul li .blockerDef,
+body[dir='ltr'] .drawer ul li .reviewDef{
+    position: absolute;
+    left: -1.65rem;
+    top:6px;
+    width:15px;
+    height: 15px;
+}
+
+body[dir='ltr'] .drawer ul li{
+    margin-left: 0.7rem
+}
+
+   
+.drawer ul li .majorDef{
+    background: url("../images/icons/disabled.svg") no-repeat center;
+    background-size:contain;
+}
+
+.drawer ul li .minorDef{
+    background: url("../images/icons/warning.svg") no-repeat center;
+    background-size: contain;
+}
+
+.drawer ul li .blockerDef{
+    background: url("../images/icons/block.svg") no-repeat center;
+    background-size: contain;
+}
+
+.drawer ul li .reviewDef{
+    background: url("../images/icons/info.svg") no-repeat center;
+    background-size: contain;
+}
+
+
+body[dir='rtl'] .drawer ul li .majorDef .iconDesc,
+body[dir='rtl'] .drawer ul li .minorDef .iconDesc,
+body[dir='rtl'] .drawer ul li .blockerDef .iconDesc,
+body[dir='rtl'] .drawer ul li .reviewDef .iconDesc{
+    
+    width: max-content;
+    height: auto;
+    position: absolute;
+    top: -1.8rem;
+    padding: 3px;
+    right: 0;
+    font-size: 12px;
+    background: #fff;
+    box-shadow: #00000029 0px 0px 16px;
+    visibility: hidden;
+    font-weight: 600;
+}
+
+body[dir='ltr'] .drawer ul li .majorDef .iconDesc,
+body[dir='ltr'] .drawer ul li .minorDef .iconDesc,
+body[dir='ltr'] .drawer ul li .blockerDef .iconDesc,
+body[dir='ltr'] .drawer ul li .reviewDef .iconDesc{
+    
+    width: max-content;
+    height: auto;
+    position: absolute;
+    top: -1.8rem;
+    padding: 3px;
+    left: 0;
+    font-size: 12px;
+    background: #fff;
+    box-shadow: #00000029 0px 0px 16px;
+    visibility: hidden;
+    font-weight: 600;
+}
+
+body[dir='ltr'] .drawer ul li .majorDef:hover .iconDesc,
+body[dir='ltr'] .drawer ul li .minorDef:hover .iconDesc,
+body[dir='ltr'] .drawer ul li .blockerDef:hover .iconDesc,
+body[dir='ltr'] .drawer ul li .reviewDef:hover .iconDesc{
+    visibility: visible;
+}
+
+body[dir='rtl'] .drawer ul li .majorDef:hover .iconDesc,
+body[dir='rtl'] .drawer ul li .minorDef:hover .iconDesc,
+body[dir='rtl'] .drawer ul li .blockerDef:hover .iconDesc,
+body[dir='rtl'] .drawer ul li .reviewDef:hover .iconDesc{
+
+    visibility: visible;
+}
+
+

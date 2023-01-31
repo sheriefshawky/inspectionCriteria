@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+    />
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="./style/style.css" />
+
+    <title>SVIS 3D Model</title>
+  </head>
+  <body dir="rtl">
+    <div class="mainContainer">
+      <div class="drawer" id="drawer"></div>
+      <div class="topBar row">
+        <div class="header col-md-2 col-sm-12">
+          <span class="bigHeader" id="bigHeader">بنود الفحص</span>
+          <span class="subHeader" id="subHeader">و المركبات الواجب فحصها</span>
+        </div>
+        <div class="topBarMenu col-md-10 col-sm-12">
+          <div class="fadeRight" id="fadeRightTop"></div>
+          <div class="fadeLeft" id="fadeLeftTop"></div>
+
+          <div class="topBarSlider">
+            <div class="autoplay" id="vehicleClassesDiv"></div>
+          </div>
+        </div>
+      </div>
+      <div class="viewArea row">
+        <div class="shadow"></div>
+        <div class="sideMenu col-md-2 col-sm-12">
+          <ul class="sideMenuControls" id="vehicleClassesTestsDiv"></ul>
+        </div>
+        <div class="model3D col-md-10 col-sm-12" id="model3d"></div>
+      </div>
+
+      <div class="bottomControls">
+        <div class="fadeRight" id="fadeRightBottom"></div>
+        <div class="fadeLeft" id="fadeLeftBottom"></div>
+        <div class="bottomSlider">
+          <div class="bottomList" id="testItemsDiv"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./script/data.js"></script>
+    <script src="./script/faults.js"></script>
+
+    <script>
+      //  Car Data Array
+      const txt = data;
+      const obj = JSON.parse(txt);
+
+      //  Tests Data Array
+      const faultDet = faults;
+      const objFaults = JSON.parse(faultDet);
+
+      // Empty Function to Avoid Error
+      function itemsChanged() {}
+
+      // Language Function
+      function getCurrentLang() {
+        let currentLan = "ar";
+        if (window.location.href.indexOf("/en/") > -1) {
+          currentLang = "en";
+          document.getElementsByTagName("body")[0].dir = "ltr";
+          document.getElementById('bigHeader').innerHTML = 'Test Requirments';
+          document.getElementById('subHeader').innerHTML = 'and Applicable Vehicles';
+
+        } else {
+          currentLang = "ar";
+          document.getElementsByTagName("body")[0].dir = "rtl";
+        }
+        return currentLang;
+      }
+
+      const usedLang = getCurrentLang();
+
+      //  Load the Top Menu Elements (Vehicle Types)
+      function loadVehicleClasses() {
+        obj.vehicleClasses.sort();
+
+        let text = "";
+        if (obj.vehicleClasses.length < 4) {
+          document.getElementById("fadeRightTop").style.display = "none";
+          document.getElementById("fadeLeftTop").style.display = "none";
+        }
+
+        console.log(obj.vehicleClasses);
+
+        for (let i in obj.vehicleClasses) {
+          document.getElementById(
+            "vehicleClassesDiv"
+          ).innerHTML += `<div ><div id="topMenu${i}"  onclick="loadVehicleClassTests(${i});"><div  class="typeContainer">  <span class="typeTitle"> ${
+            usedLang == "ar"
+              ? obj.vehicleClasses[i].nameAr
+              : obj.vehicleClasses[i].nameEn
+          }  </span>  <img  src=" ${
+            obj.vehicleClasses[i].iconName
+          }" /> </div> <span class="sliderHover"></span></div> </div>`;
+          setActiveCar(i);
+        }
+        // document.getElementById("vehicleClassesDiv").innerHTML = text;
+        // document.getElementById("drawer").style.display = "none";
+        closeDrawer();
+      }
+
+      function setActiveCar(i) {
+        if (obj.vehicleClasses[i].active == "true") {
+          document.getElementById(`topMenu${i}`).className = "seletedTopBar";
+          console.log(obj.vehicleClasses[i].active);
+        } else {
+          document.getElementById(`topMenu${i}`).className = "";
+        }
+      }
+      // Load the Test Data of the Initial selected car
+      window.onload = () => {
+        let tests = '<span class="sideLine"></span>';
+        const index = obj.vehicleClasses[0].tests.findIndex(
+          (i) => i.nameEn == "Exterior"
+        );
+
+        for (let i in obj.vehicleClasses[0].tests) {
+          if (i == index) {
+            tests += `<li onclick="loadVehicleClassTestItems(${0},${i});" class="active" id="menuItemNo${i}" ><span class="selectedItem"></span>${
+              usedLang == "ar"
+                ? obj.vehicleClasses[0].tests[i].nameAr
+                : obj.vehicleClasses[0].tests[i].nameEn
+            } <span class=" ${
+              obj.vehicleClasses[0].tests[i].iconName
+            }"></span></li>`;
+          } else {
+            tests += `<li onclick="loadVehicleClassTestItems(${0},${i});" id="menuItemNo${i}" ><span class="selectedItem"></span>${
+              usedLang == "ar"
+                ? obj.vehicleClasses[0].tests[i].nameAr
+                : obj.vehicleClasses[0].tests[i].nameEn
+            }<span class=" ${
+              obj.vehicleClasses[0].tests[i].iconName
+            }"></span></li>`;
+          }
+        }
+        document.getElementById("vehicleClassesTestsDiv").innerHTML = tests;
+        closeDrawer();
+        loadVehicleClassTestItems(0, 1);
+      };
+
+      //  Change Active state of the selected Vehicle Type and Load the Test Data of the Selected Car
+      function loadVehicleClassTests(vehicleClassId) {
+        const activeState = document.getElementById("topMenu" + vehicleClassId);
+
+        if (activeState.className == "seletedTopBar") {
+          const allTests = document.getElementsByClassName("reqContainer");
+          for (let x in allTests) {
+            if (allTests[x].children != undefined) {
+              allTests[x].children[0].style.border = "0px solid";
+              allTests[x].children[1].style.fontWeight = "normal";
+            }
+          }
+          closeDrawer();
+        } else {
+          const activeIndex = obj.vehicleClasses.findIndex(
+            (i) => i.active == "true"
+          );
+          obj.vehicleClasses[activeIndex].active = "false";
+          obj.vehicleClasses[vehicleClassId].active = "true";
+
+          document.getElementById("vehicleClassesDiv").innerHTML = "";
+
+          for (let i in obj.vehicleClasses) {
+            document.getElementById(
+              "vehicleClassesDiv"
+            ).innerHTML += `<div ><div id="topMenu${i}"  onclick="loadVehicleClassTests(${i});"><div  class="typeContainer">  <span class="typeTitle"> ${
+              usedLang == "ar"
+                ? obj.vehicleClasses[i].nameAr
+                : obj.vehicleClasses[i].nameEn
+            }  </span>  <img  src=" ${
+              obj.vehicleClasses[i].iconName
+            }" /> </div> <span class="sliderHover"></span></div> </div>`;
+            setActiveCar(i);
+          }
+
+          itemsChangedTop(vehicleClassId);
+
+          // setActiveCar(vehicleClassId);
+          // console.log(obj.vehicleClasses[activeIndex]);
+
+          // document.getElementsByClassName("seletedTopBar")[0].className = "";
+          // document.getElementById('topMenu'+vehicleClassId).className = 'seletedTopBar';
+          let tests = '<span class="sideLine"></span>';
+          const index = obj.vehicleClasses[vehicleClassId].tests.findIndex(
+            (i) => i.nameEn == "Exterior"
+          );
+
+          for (let i in obj.vehicleClasses[vehicleClassId].tests) {
+            if (i == index) {
+              tests += `<li onclick="loadVehicleClassTestItems(${vehicleClassId},${i});" class="active" id="menuItemNo${i}" ><span class="selectedItem"></span>${
+                usedLang == "ar"
+                  ? obj.vehicleClasses[vehicleClassId].tests[i].nameAr
+                  : obj.vehicleClasses[vehicleClassId].tests[i].nameEn
+              } <span class=" ${
+                obj.vehicleClasses[vehicleClassId].tests[i].iconName
+              }"></span></li>`;
+            } else {
+              tests += `<li onclick="loadVehicleClassTestItems(${vehicleClassId},${i});" id="menuItemNo${i}" ><span class="selectedItem"></span>${
+                usedLang == "ar"
+                  ? obj.vehicleClasses[vehicleClassId].tests[i].nameAr
+                  : obj.vehicleClasses[vehicleClassId].tests[i].nameEn
+              }<span class=" ${
+                obj.vehicleClasses[vehicleClassId].tests[i].iconName
+              }"></span></li>`;
+            }
+          }
+          document.getElementById("vehicleClassesTestsDiv").innerHTML = tests;
+          closeDrawer();
+          loadVehicleClassTestItems(vehicleClassId, 1);
+        }
+      }
+
+      // Map out the Side Menu for the test Types and the Tests
+
+      let newObjFaults = [{}];
+      function loadVehicleClassTestItems(vehicleClassId, testId) {
+        let testItems = "";
+        document.getElementsByClassName("active")[0].className = "";
+        const getActive = "menuItemNo" + testId;
+        document.getElementById(getActive).className = "active";
+
+        if (
+          obj.vehicleClasses[vehicleClassId].tests[testId].itemsDefiniton
+            .length < 6
+        ) {
+          document.getElementById("fadeRightBottom").style.display = "none";
+          document.getElementById("fadeLeftBottom").style.display = "none";
+        } else {
+          document.getElementById("fadeRightBottom").style.display = "flex";
+          document.getElementById("fadeLeftBottom").style.display = "flex";
+        }
+
+        newObjFaults = obj.vehicleClasses[vehicleClassId].tests[
+          testId
+        ].itemsDefiniton.map((item) => ({
+          test: {
+            view: item,
+            fault: objFaults.itemsDefinition.find(
+              (code) => code.pointerCode == item.pointerCode
+            ),
+          },
+          active: false,
+        }));
+
+        console.log(newObjFaults);
+
+        for (let i in newObjFaults) {
+          testItems += `<div><div class="reqContainer" id="test${i}" onclick="loadItemDefinitionDesc(${vehicleClassId}, ${testId},${i});"><span class="imageContainer"><img src=" ${
+            newObjFaults[i].test.view.iconName
+          }" /></span><span class="reqTitle">${
+            usedLang == "ar"
+              ? obj.vehicleClasses[vehicleClassId].tests[testId].itemsDefiniton[
+                  i
+                ].nameAr
+              : obj.vehicleClasses[vehicleClassId].tests[testId].itemsDefiniton[
+                  i
+                ].nameEn
+          } </span></div></div>`;
+        }
+
+        document.getElementById("model3d").innerHTML =
+          "<img class='animate__animated animate__backInLeft' src='" +
+          obj.vehicleClasses[vehicleClassId].tests[testId].testImages[0]
+            .imageName +
+          "' />";
+        document.getElementById("testItemsDiv").innerHTML = testItems;
+        itemsChanged();
+        closeDrawer();
+      }
+
+      // Show Drawer with the Selected Test Data
+
+      function loadItemDefinitionDesc(
+        vehicleClassId,
+        testId,
+        itemDefinitionId
+      ) {
+        objFaults.itemsDefinition.sort();
+
+        // const defenitions = objFaults.itemsDefinition.find(item => item.pointerCode == obj.vehicleClasses[vehicleClassId].tests[testId].itemsDefiniton[itemDefinitionId].pointerCode);
+
+        const allTests = document.getElementsByClassName("reqContainer");
+
+        for (let y in newObjFaults) {
+          newObjFaults[y].active = false;
+        }
+
+        newObjFaults[itemDefinitionId].active = true;
+
+        document.getElementById("testItemsDiv").innerHTML = "";
+
+        for (let i in newObjFaults) {
+          document.getElementById(
+            "testItemsDiv"
+          ).innerHTML += `<div><div class="reqContainer" id="test${i}" onclick="loadItemDefinitionDesc(${vehicleClassId}, ${testId},${i});"><span class="imageContainer"><img src=" ${
+            newObjFaults[i].test.view.iconName
+          }" /></span><span class="reqTitle">${
+            usedLang == "ar"
+              ? obj.vehicleClasses[vehicleClassId].tests[testId].itemsDefiniton[
+                  i
+                ].nameAr
+              : obj.vehicleClasses[vehicleClassId].tests[testId].itemsDefiniton[
+                  i
+                ].nameEn
+          } </span></div></div>`;
+          if (newObjFaults[i].active == true) {
+            for (let x in allTests) {
+              if (allTests[x].children != undefined) {
+                allTests[x].children[0].style.border = "0px solid";
+                allTests[x].children[1].style.fontWeight = "normal";
+              }
+            }
+            document.getElementById("test" + i).children[0].style.border =
+              "2px solid #0087b0";
+            document.getElementById("test" + i).children[1].style.fontWeight =
+              "bold ";
+          }
+        }
+
+        const windowSize = window.innerWidth;
+
+        if(windowSize > 900 && newObjFaults.length > 10){
+            itemsChangedBottom(itemDefinitionId);
+        }
+        else {
+          if(windowSize > 900 && newObjFaults.length < 10){
+            itemsChangedBottomCase();
+          }
+          else{
+            if(windowSize > 700 && newObjFaults.length > 7){
+              itemsChangedBottom(itemDefinitionId);
+           }
+           else{
+             if(windowSize > 700 && newObjFaults.length < 7){
+              itemsChangedBottomCase();
+              }
+            else{
+              if(windowSize > 500 && newObjFaults.length > 5){
+                itemsChangedBottom(itemDefinitionId);
+              }
+              else{
+                if(windowSize <= 500 && newObjFaults.length > 5){
+                  itemsChangedBottom(itemDefinitionId);
+                }
+                else{
+                  itemsChangedBottomCase();
+                } 
+              }
+            }
+           }
+          }
+        }
+
+        document.getElementById("drawer").innerHTML =
+          "<div class='close' onclick='closeDrawer()'> X </div>";
+
+        if (usedLang == "ar") {
+          document.getElementById("drawer").innerHTML +=
+            newObjFaults[itemDefinitionId].test.fault.detailedHtmlDescriptionAr;
+            const major = document.getElementsByClassName("majorDef");
+            const minor = document.getElementsByClassName("minorDef");
+            const blocker = document.getElementsByClassName("blockerDef");
+            const info = document.getElementsByClassName("reviewDef");
+
+            console.log(info)
+
+            for(let i in major){
+             major[i].innerHTML = "<span class=iconDesc>خلل يسبب عدم اجتياز الفحص</span>";
+            }
+            for(let i in minor){
+             minor[i].innerHTML = "<span class=iconDesc>خلل ثانوي</span>";
+            }
+            for(let i in blocker){
+             blocker[i].innerHTML = "<span class=iconDesc>خلل يحظر المركبة</span>";
+            }
+            for(let i in info){
+             info[i].innerHTML = "<span class=iconDesc>معلومات</span>";
+            }
+        } else {
+          document.getElementById("drawer").innerHTML +=
+            newObjFaults[itemDefinitionId].test.fault.detailedHtmlDescriptionEn;
+
+            const major = document.getElementsByClassName("majorDef"); 
+            const minor = document.getElementsByClassName("minorDef");
+            const blocker = document.getElementsByClassName("blockerDef");
+            const info = document.getElementsByClassName("reviewDef");
+
+            for(let i in major){
+             major[i].innerHTML = "<span class=iconDesc>Major Defect</span>";
+            }
+            for(let i in minor){
+             minor[i].innerHTML = "<span class=iconDesc>Minor Defect</span>";
+            }
+            for(let i in blocker){
+             blocker[i].innerHTML = "<span class=iconDesc>Blocker Defect</span>";
+            }
+            for(let i in info){
+             info[i].innerHTML = "<span class=iconDesc>Information</span>";
+            }
+        }
+
+
+
+       
+        document.getElementById("drawer").style.display = "flex";
+      }
+
+      function closeDrawer() {
+        document.getElementById(`drawer`).style.display = `none`;
+        const allTests = document.getElementsByClassName("reqContainer");
+
+        for (let x in allTests) {
+          if (allTests[x].children != undefined) {
+            allTests[x].children[0].style.border = "0px solid";
+            allTests[x].children[1].style.fontWeight = "normal";
+          }
+        }
+
+        for (let x in newObjFaults) {
+          newObjFaults[x].active = false;
+        }
+      }
+
+      loadVehicleClasses();
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="./script/slider.js"></script>
+  </body>
+</html>
